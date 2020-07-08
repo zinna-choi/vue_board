@@ -8,8 +8,8 @@
       <div class="comment-list-item-context">{{commentObj.context}}</div>
       <div class="comment-list-item-button">
         <div>
-          <b-button variant="info">수정</b-button>
-          <b-button variant="info">삭제</b-button>
+          <b-button variant="info" @click="updateComment">수정</b-button>
+          <b-button variant="info" @click="deleteComment">삭제</b-button>
         </div>
 
         <div>
@@ -37,8 +37,8 @@
         </div>
         <div class="comment-list-item-context">{{item.context}}</div>
         <div class="comment-list-item-button">
-          <b-button variant="info">수정</b-button>
-          <b-button variant="info">삭제</b-button>
+          <b-button variant="info" @click="updateComment">수정</b-button>
+          <b-button variant="info" @click="deleteComment">삭제</b-button>
         </div>
       </div>
     </template>
@@ -52,7 +52,8 @@ import CommentCreate from "./CommentCreate";
 export default {
   name: "CommentListItem",
   props: {
-    commentObj: Object
+    commentObj: Object,
+    reloadComment: Function
   },
   components: {
     CommentCreate
@@ -86,6 +87,16 @@ export default {
           item => item.user_id === subCommentItem.user_id
         )[0].name
       }));
+    },
+    deleteComment() {
+      const comment_index = data.Comment.findIndex(
+        item => item.comment_id === this.commentObj.comment_id
+      );
+      data.Comment.splice(comment_index, 1);
+      this.reloadComment();
+
+      console.log("delete", comment_index);
+      console.log("delete", this.reloadCommnet);
     }
   }
 };
